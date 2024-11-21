@@ -1,16 +1,34 @@
 import os
-
 import cv2
-
 
 DATA_DIR = './data'
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
-number_of_classes = 3
+number_of_classes = 10
 dataset_size = 100
 
-cap = cv2.VideoCapture(2)
+def get_available_camera():
+    """Try different camera indices until a working one is found"""
+    for index in range(10):  # Check first 10 camera indices
+        cap = cv2.VideoCapture(index)
+        if cap.isOpened():
+            ret, frame = cap.read()
+            if ret:
+                cap.release()
+                return index
+        cap.release()
+    return None
+
+# Initialize camera
+camera_index = get_available_camera()
+if camera_index is None:
+    print("No working camera found!")
+    exit(1)
+
+print(f"Using camera index: {camera_index}")
+cap = cv2.VideoCapture(camera_index)
+
 for j in range(number_of_classes):
     if not os.path.exists(os.path.join(DATA_DIR, str(j))):
         os.makedirs(os.path.join(DATA_DIR, str(j)))
