@@ -1,16 +1,16 @@
 import os
 import cv2
 
+number_of_letters = 2
+dataset_size = 100
+camera_index = 0 # Change this if camera isn't found
+
 # Create a dictionary mapping numbers to letters (0-25 to A-Z)
 LETTER_DICT = {i: chr(65 + i) for i in range(26)}  # 65 is ASCII for 'A'
 
 # User configuration
 USER_NAME = "daniel"  # Change this to your name
-# Create a dictionary mapping numbers to letters (0-25 to A-Z)
-LETTER_DICT = {i: chr(65 + i) for i in range(26)}  # 65 is ASCII for 'A'
 
-# User configuration
-USER_NAME = "daniel"  # Change this to your name
 DATA_DIR = './data'
 USER_DIR = os.path.join(DATA_DIR, USER_NAME)  # Create user-specific directory
 
@@ -19,11 +19,6 @@ if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 if not os.path.exists(USER_DIR):
     os.makedirs(USER_DIR)
-
-number_of_letters = 2
-dataset_size = 100
-
-camera_index = 0
 
 cap = cv2.VideoCapture(camera_index)
 if not cap.isOpened():
