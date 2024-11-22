@@ -1,25 +1,40 @@
 import pickle
-
-import cv2
+import os
 import mediapipe as mp
 import numpy as np
+import cv2
 
 model_dict = pickle.load(open('./model.p', 'rb'))
 model = model_dict['model']
 
-cap = cv2.VideoCapture(0)
+print("Model loaded successfully!")
+if hasattr(model, 'n_estimators'):
+    print(f"Using Random Forest with {model.n_estimators} trees")
+print("This model was trained on combined data from multiple users")
 
-if not cap.isOpened():
-    print("Error: Could not open camera")
+# Initialize camera
+cap = cv2.VideoCapture(0) # Change this if camera isn't found
+
+success, frame = cap.read()
+if success:
+    H, W, _ = frame.shape
+else:
+    print("Failed to get frame dimensions")
     exit()
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
+# Modify hands initialization to include image dimensions
+hands = mp_hands.Hands(
+    static_image_mode=True,
+    min_detection_confidence=0.3,
+    model_complexity=0,  # Use simpler model
+    min_tracking_confidence=0.5)
 
-labels_dict = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J'}
+# Add these lines to configure MediaPipe
+mp.solutions.drawing_utils.DrawingSpec(thickness=1, circle_radius=1)
 
 while True:
 
@@ -65,7 +80,7 @@ while True:
             # Make prediction only if we have the correct number of features
             if len(data_aux) == 42:  # MediaPipe hands has 21 landmarks * 2 (x,y)
                 prediction = model.predict([np.asarray(data_aux)])
-                predicted_character = labels_dict[int(prediction[0])]
+                predicted_character = prediction[0]
 
                 x1 = int(min(x_) * W) - 10
                 y1 = int(min(y_) * H) - 10
