@@ -6,6 +6,11 @@ LETTER_DICT = {i: chr(65 + i) for i in range(26)}  # 65 is ASCII for 'A'
 
 # User configuration
 USER_NAME = "daniel"  # Change this to your name
+# Create a dictionary mapping numbers to letters (0-25 to A-Z)
+LETTER_DICT = {i: chr(65 + i) for i in range(26)}  # 65 is ASCII for 'A'
+
+# User configuration
+USER_NAME = "daniel"  # Change this to your name
 DATA_DIR = './data'
 USER_DIR = os.path.join(DATA_DIR, USER_NAME)  # Create user-specific directory
 
@@ -25,6 +30,7 @@ if not cap.isOpened():
     raise RuntimeError(f"Failed to open camera with index {camera_index}. Please check if the camera is connected and accessible.")
 print(f"Using camera index: {camera_index}")
 print(f"Collecting data for user: {USER_NAME}")
+print(f"Collecting data for user: {USER_NAME}")
 
 for j in range(number_of_letters):
     letter = LETTER_DICT[j]
@@ -39,6 +45,8 @@ for j in range(number_of_letters):
         ret, frame = cap.read()
         cv2.putText(frame, f'User: {USER_NAME} - Letter {letter} - Press "Q" to start!', 
                     (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 3,
+        cv2.putText(frame, f'User: {USER_NAME} - Letter {letter} - Press "Q" to start!', 
+                    (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 3,
                     cv2.LINE_AA)
         cv2.imshow('frame', frame)
         if cv2.waitKey(25) == ord('q'):
@@ -47,6 +55,9 @@ for j in range(number_of_letters):
     counter = 0
     while counter < dataset_size:
         ret, frame = cap.read()
+        cv2.putText(frame, f'Capturing {counter}/{dataset_size}', 
+                    (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 3,
+                    cv2.LINE_AA)
         cv2.putText(frame, f'Capturing {counter}/{dataset_size}', 
                     (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 3,
                     cv2.LINE_AA)
