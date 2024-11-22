@@ -32,8 +32,16 @@ for j in range(number_of_letters):
     letter_dir = os.path.join(USER_DIR, letter)
     if not os.path.exists(letter_dir):
         os.makedirs(letter_dir)
-
+    
+    # Count existing files in the letter directory
+    existing_files = len([f for f in os.listdir(letter_dir) if f.endswith('.jpg')])
+    
+    if existing_files >= dataset_size:
+        print(f'Skipping letter {letter} - already has {existing_files} images')
+        continue
+        
     print(f'Collecting data for user {USER_NAME}, letter {letter} ({j + 1}/{number_of_letters})')
+    print(f'Need to collect {dataset_size - existing_files} more images')
 
     done = False
     while True:
@@ -45,12 +53,9 @@ for j in range(number_of_letters):
         if cv2.waitKey(25) == ord('q'):
             break
 
-    counter = 0
+    counter = existing_files
     while counter < dataset_size:
         ret, frame = cap.read()
-        cv2.putText(frame, f'Capturing {counter}/{dataset_size}', 
-                    (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 3,
-                    cv2.LINE_AA)
         cv2.putText(frame, f'Capturing {counter}/{dataset_size}', 
                     (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 3,
                     cv2.LINE_AA)
