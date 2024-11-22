@@ -1,7 +1,7 @@
 import os
 import cv2
 
-number_of_letters = 2
+number_of_letters = 26
 dataset_size = 100
 camera_index = 0 # Change this if camera isn't found
 
