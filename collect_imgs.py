@@ -45,8 +45,6 @@ for j in range(number_of_letters):
         ret, frame = cap.read()
         cv2.putText(frame, f'User: {USER_NAME} - Letter {letter} - Press "Q" to start!', 
                     (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 3,
-        cv2.putText(frame, f'User: {USER_NAME} - Letter {letter} - Press "Q" to start!', 
-                    (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 3,
                     cv2.LINE_AA)
         cv2.imshow('frame', frame)
         if cv2.waitKey(25) == ord('q'):
