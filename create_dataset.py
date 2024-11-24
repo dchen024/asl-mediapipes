@@ -39,21 +39,27 @@ for user_dir in os.listdir(DATA_DIR):
                     results = hands.process(img_rgb)
                     if results.multi_hand_landmarks:
                         for hand_landmarks in results.multi_hand_landmarks:
-                            for i in range(len(hand_landmarks.landmark)):
-                                x = hand_landmarks.landmark[i].x
-                                y = hand_landmarks.landmark[i].y
-                                x_.append(x)
-                                y_.append(y)
+                            data_aux = []
+                            x_ = []
+                            y_ = []
 
-                            for i in range(len(hand_landmarks.landmark)):
-                                x = hand_landmarks.landmark[i].x
-                                y = hand_landmarks.landmark[i].y
-                                data_aux.append(x - min(x_))
-                                data_aux.append(y - min(y_))
+                            if len(hand_landmarks.landmark) == 21:
+                                for i in range(21):
+                                    x = hand_landmarks.landmark[i].x
+                                    y = hand_landmarks.landmark[i].y
+                                    x_.append(x)
+                                    y_.append(y)
 
-                            data.append(data_aux)
-                            labels.append(letter_dir)
-                            users.append(user_dir)
+                                for i in range(21):
+                                    x = hand_landmarks.landmark[i].x
+                                    y = hand_landmarks.landmark[i].y
+                                    data_aux.append(x - min(x_))
+                                    data_aux.append(y - min(y_))
+
+                                if len(data_aux) == 42:
+                                    data.append(data_aux)
+                                    labels.append(letter_dir)
+                                    users.append(user_dir)
 
 print(f"Total samples collected: {len(data)}")
 print(f"Unique users: {len(set(users))}")
