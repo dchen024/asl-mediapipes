@@ -24,7 +24,7 @@ for letter in np.unique(labels):
     print(f"  {letter}: {count} samples")
 
 print("\nSplitting data into training and testing sets...")
-x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, shuffle=True, stratify=labels)
+x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
 print(f"Training samples: {len(x_train)}")
 print(f"Testing samples: {len(x_test)}")
 
